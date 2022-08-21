@@ -68,4 +68,17 @@ void main() {
       expect(either.left, throwsA(DomainError.unexpected));
     }
   });
+
+    test('should throw InvalidCrendentialsErro if HttpClient returns 401', () async {
+    when(httpClient.request(
+            url: anyNamed('url'),
+            method: anyNamed('url'),
+            body: anyNamed('body')))
+        .thenThrow(HttpError.unauthorized);
+
+    final either = await sut.auth(params);
+    if (either.isLeft) {
+      expect(either.left, throwsA(DomainError.invalidCrendentials));
+    }
+  });
 }

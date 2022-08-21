@@ -16,8 +16,9 @@ class RemoteAuthentication {
     try {
       httpClient.request(url: url, method: 'post', body: bodyJson);
       return const Right(true);
-    } on HttpError {
-      return Left(throw DomainError.unexpected);
+    } on HttpError catch(error) {
+      final erro = error==HttpError.unauthorized ? DomainError.invalidCrendentials : DomainError.unexpected;
+      return Left(throw erro);
     }
     
   }
