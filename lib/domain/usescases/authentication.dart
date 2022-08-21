@@ -13,7 +13,7 @@ class AuthenticationParams {
 
   AuthenticationParams({required this.email, required this.secret});
 
-  Map toMap(){
+  Map toJson(){
     return {'email': email, 'password': secret};
 
   }

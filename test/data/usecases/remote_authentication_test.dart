@@ -9,7 +9,7 @@ class RemoteAuthentication {
 
   RemoteAuthentication({required this.httpClient, required this.url});
   Future<void> auth(AuthenticationParams params) async {
-    httpClient.request(url: url, method: 'post', body: params.toMap());
+    httpClient.request(url: url, method: 'post', body: params.toJson());
   }
 }
 
