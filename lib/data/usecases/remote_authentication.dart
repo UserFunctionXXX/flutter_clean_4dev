@@ -1,14 +1,27 @@
+import 'package:either_dart/either.dart';
+
 import '../http/http.dart';
+import '../../domain/helpers/helpers.dart';
 import '../../domain/usescases/usescases.dart';
+
 
 class RemoteAuthentication {
   final HttpClient httpClient;
   final String url;
 
+  
   RemoteAuthentication({required this.httpClient, required this.url});
-  Future<void> auth(AuthenticationParams params) async {
+  Future<Either<Exception,bool>> auth(AuthenticationParams params) async {
     final bodyJson = RemoteAuthenticationParams.fromDomain(params).toJson();
-    httpClient.request(url: url, method: 'post', body: bodyJson);
+    try {
+      print('tentando');
+      httpClient.request(url: url, method: 'post', body: bodyJson);
+      return const Right(true);
+    } on HttpError {
+      print('erro');
+      return Left(throw DomainError.unexpected);
+    }
+    
   }
 }
 
