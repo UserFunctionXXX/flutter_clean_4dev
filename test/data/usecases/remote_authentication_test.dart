@@ -55,6 +55,18 @@ void main() {
     if (either.isLeft){
       expect(either.left, throwsA(DomainError.unexpected));
     }
+
+    test('should throw UnexpectedErro if HttpClient returns 500', () async {
+    when(httpClient.request(
+            url: anyNamed('url'),
+            method: anyNamed('url'),
+            body: anyNamed('body')))
+        .thenThrow(HttpError.serverError);
+ 
+    final either = await sut.auth(params);
+    if (either.isLeft){
+      expect(either.left, throwsA(DomainError.unexpected));
+    }
     
   });
 }
