@@ -14,11 +14,9 @@ class RemoteAuthentication {
   Future<Either<Exception,bool>> auth(AuthenticationParams params) async {
     final bodyJson = RemoteAuthenticationParams.fromDomain(params).toJson();
     try {
-      print('tentando');
       httpClient.request(url: url, method: 'post', body: bodyJson);
       return const Right(true);
     } on HttpError {
-      print('erro');
       return Left(throw DomainError.unexpected);
     }
     

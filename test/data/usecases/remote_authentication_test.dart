@@ -43,4 +43,18 @@ void main() {
     }
     
   });
+
+    test('should throw UnexpectedErro if HttpClient returns 404', () async {
+    when(httpClient.request(
+            url: anyNamed('url'),
+            method: anyNamed('url'),
+            body: anyNamed('body')))
+        .thenThrow(HttpError.notFound);
+ 
+    final either = await sut.auth(params);
+    if (either.isLeft){
+      expect(either.left, throwsA(DomainError.unexpected));
+    }
+    
+  });
 }
