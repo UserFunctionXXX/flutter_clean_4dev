@@ -1,4 +1,3 @@
-
 import 'package:test/test.dart';
 import 'package:faker/faker.dart';
 import 'package:mockito/mockito.dart';
@@ -19,7 +18,8 @@ void main() {
     httpClient = HttpClientSpy();
     url = faker.internet.httpUrl();
     sut = RemoteAuthentication(httpClient: httpClient, url: url);
-    params = AuthenticationParams(email: faker.internet.email(), secret: faker.internet.password());
+    params = AuthenticationParams(
+        email: faker.internet.email(), secret: faker.internet.password());
   });
 
   test('should call HttpClient with correct values', () async {
@@ -36,37 +36,36 @@ void main() {
             method: anyNamed('url'),
             body: anyNamed('body')))
         .thenThrow(HttpError.badRequest);
- 
+
     final either = await sut.auth(params);
-    if (either.isLeft){
+    if (either.isLeft) {
       expect(either.left, throwsA(DomainError.unexpected));
     }
-    
   });
 
-    test('should throw UnexpectedErro if HttpClient returns 404', () async {
+  test('should throw UnexpectedErro if HttpClient returns 404', () async {
     when(httpClient.request(
             url: anyNamed('url'),
             method: anyNamed('url'),
             body: anyNamed('body')))
         .thenThrow(HttpError.notFound);
- 
+
     final either = await sut.auth(params);
-    if (either.isLeft){
+    if (either.isLeft) {
       expect(either.left, throwsA(DomainError.unexpected));
     }
+  });
 
-    test('should throw UnexpectedErro if HttpClient returns 500', () async {
+  test('should throw UnexpectedErro if HttpClient returns 500', () async {
     when(httpClient.request(
             url: anyNamed('url'),
             method: anyNamed('url'),
             body: anyNamed('body')))
         .thenThrow(HttpError.serverError);
- 
+
     final either = await sut.auth(params);
-    if (either.isLeft){
+    if (either.isLeft) {
       expect(either.left, throwsA(DomainError.unexpected));
     }
-    
   });
 }
