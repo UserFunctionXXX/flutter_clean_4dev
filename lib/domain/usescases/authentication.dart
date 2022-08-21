@@ -12,5 +12,11 @@ class AuthenticationParams {
   final String secret;
 
   AuthenticationParams({required this.email, required this.secret});
+
+  Map toMap(){
+    return {'email': email, 'password': secret};
+
+  }
+  
   
 }
